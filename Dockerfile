@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   bash \
   build-essential \
   ca-certificates \
+  curl \
   dnsutils \
   fzf \
   gh \
@@ -21,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   iproute2 \
   ipset \
   iptables \
+  iputils-ping \
   jq \
   less \
   man-db \
@@ -57,7 +59,9 @@ RUN git clone --depth=1 https://github.com/justpresident/bootstrap.git ~/bootstr
 
 # Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH=/root/.cargo/bin:${PATH}
+ENV PATH=/home/node/.cargo/bin:${PATH}
+RUN rustup component add rust-analyzer
+RUN cargo install taska
 ##############
 
 # Install global packages
