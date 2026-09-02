@@ -78,6 +78,25 @@ ENV VISUAL=vim
 # Install Claude
 RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
 
+# Seed Claude Code user settings. `attribution` suppresses the trailers Claude
+# would otherwise append: "" hides the commit and PR attribution text, and
+# sessionUrl:false drops the claude.ai session link from both. `enabledPlugins`
+# turns on the rust-analyzer LSP plugin, pairing with the rust-analyzer
+# component installed above. ~/.claude is image state (only /workspace and
+# /shared are mounted), so this is in place on the first run of a newly built
+# container.
+RUN mkdir -p /home/node/.claude && printf '%s\n' \
+  '{' \
+  '  "attribution": {' \
+  '    "commit": "",' \
+  '    "pr": "",' \
+  '    "sessionUrl": false' \
+  '  },' \
+  '  "enabledPlugins": {' \
+  '    "rust-analyzer-lsp@claude-plugins-official": true' \
+  '  }' \
+  '}' > /home/node/.claude/settings.json
+
 # Install Gemini
 RUN npm install -g @google/gemini-cli@${GEMINI_VERSION}
 

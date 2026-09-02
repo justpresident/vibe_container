@@ -69,3 +69,16 @@ vibe_it root
 
 Use `/workspace` for the active project and `/shared` for files that should be
 available across multiple project containers.
+
+## Preconfigured Claude Code Settings
+
+The image ships a `~/.claude/settings.json` that:
+
+- disables Claude Code's attribution trailers, so commits and pull requests it
+  creates carry no `Co-Authored-By` line, no `Generated with Claude Code` line,
+  and no session link;
+- enables the `rust-analyzer-lsp` plugin, pairing with the `rust-analyzer`
+  component the image installs.
+
+`~/.claude` is not mounted, so this applies from the first run of a newly built
+container and any further settings can be edited in place.
